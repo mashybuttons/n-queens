@@ -79,12 +79,28 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      // var board = this.rows()
+      // var row = board[rowIndex]
+      var row = this.get(rowIndex);
+      var piecesInRow = 0;
+      var result;
+      _.each(row, function(space){
+        if(space === 1) {
+          piecesInRow++;
+        }
+      });
+      return !(piecesInRow<=1); // fixme
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var board = this;
+      var rows = board.rows().length;
+      var result = false;
+      for(var i = 0; i< rows; i++) {
+        result = result || board.hasRowConflictAt(i);
+      }
+      return result; // fixme
     },
 
 
@@ -94,12 +110,28 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      //find how many columns
+      var board = this.rows();
+      var colCount = board.length;
+      var piecesInCol = 0;
+
+      _.each(board, function(row, rowIndex){
+        if(row[colIndex] !== 0) {
+          piecesInCol++;
+        }
+      });
+      return !(piecesInCol<=1); // fixme
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var board = this
+      var cols = board.rows().length
+      var result = false;
+      for(var i = 0; i<cols; i++) {
+        result = result || board.hasColConflictAt(i)
+      }
+      return result; // fixme
     },
 
 
@@ -109,7 +141,28 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //find length of board
+      //count how many major diagnols
+
+      var board = this;
+      var boardSize = board.rows().length;
+      var diagonalCount = (2*boardSize)-1;
+      var diagStartInCol = majorDiagonalColumnIndexAtFirstRow;
+      var piecesInDiag = 0;
+      
+      function recurs(arr, rowIndex, col) {
+        if(arr[rowIndex][col] === 1) {
+          piecesInDiag++;
+        } else if(!arr[rowIndex]) {
+          return;
+        } else {
+          recurs(arr, rowIndex+1, col+1);
+        }
+      }
+
+      recurs(this.rows(), 0, diagStartInCol);
+      
+      return !(piecesInDiag<=1); // fixme
     },
 
     // test if any major diagonals on this board contain conflicts

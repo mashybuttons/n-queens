@@ -27,46 +27,66 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   // var solutionCount = undefined; //fixme
+  var firstBoard = new Board({n: n});
+  console.log('first first first board', JSON.stringify(firstBoard.rows()));
+  var boardSize = firstBoard.get('n');
+  var ans = 0;
+  var iCount = 0;    //keep adding pices, until, both conflicts are false. then recurs on that spot
+  
 
-  // var board = new Board({n:n});
-  // var boardSize = board.get('n');
-  // var ans = [];
+  // toggle row/col index that was passed in
+  // if no conflicts
+     //n rooks, add to ans
+      // untoggle.
+      // recurse to next node over row - 1 col + 1
+    // check if end of row?
+      //nope recurse(row + 1, col);
+    // check if theres a next collum?
+      //yes recurse(row, col + 1);
+    
+    // Need to know where we're at , which node to go to, and how to get there!
 
 
 
-  // function recurs () {
-  //   // place peice.
-  //   board.togglePice(rowIndex, colIndex);
-  //   if (board.hasRowConflictAt(rowIndex) || board.hasColConflictAt(colIndex)){
-  //     return;      
+  // var recurs = function(rowIndex, colIndex, board) {
+  //   console.log('board before', board.rows());
+  //   board.togglePiece(rowIndex, colIndex);
+  //   console.log(board.hasAnyRooksConflicts(), board.rows());
+
+  //   if (board.hasAnyRooksConflicts() === false) {
+  //     _.flatten(board.rows()).forEach(function(space) {
+  //     if (space === 1) {
+  //       iCount++;
+  //     }
+  //     });
+  //     if (iCount === n) {
+  //       iCount = 0;
+  //       console.log('correct',board.rows());
+  //       ans++;
+  //     }
+  //     if (board._isInBounds(rowIndex, colIndex + 1) === false && board._isInBounds(rowIndex + 1, 0)) {
+  //       recurs(rowIndex + 1, 0, board);
+  //     } else if (board._isInBounds(rowIndex, colIndex + 1) === true){
+  //       recurs(rowIndex, colIndex + 1, board);
+  //     } 
   //   }
-  // }
+  // };
 
-
-  // }
-  // //place one togglepiece first
-  //   //recurs through that start point, and add pieces according to first piece
-  //     //add this solution to the solutton count
-  // //place new start point
-  //   //do it again.
-
-  //   //if at any point index repeates
-  // recurs();
-
-
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+  //   recurs(0, 0, firstBoard);
+  
+  console.log('Number of solutions for ' + n + ' rooks:', ans);
+  return ans;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = new Board({n:n}); //fixme
-  var rows =  _.range(n);
-  var collums =  _.range(n);
+  var solution = new Board({n: n }); //fixme
+  var rows = _.range(n);
+  var collums = _.range(n);
   var randomIndex = Math.floor(Math.random() * rows.length);
-  for(var i = 0; i < n; i++){
-    for(var j = n; j > 0; j--) {
-      solution.togglePiece(i, j)
+  for (var i = 0; i < n; i++) {
+    for (var j = n; j > 0; j--) {
+      solution.togglePiece(i, j);
     }
 
     // solution.togglePiece(rows[randomIndex], collums[randomIndex]);

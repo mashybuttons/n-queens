@@ -232,7 +232,7 @@
       var result = false;
       // breaks everything but why?
      
-      for (var i = 0; i <= posColCount*2 - 1; i++) {
+      for (var i = 0; i <= posColCount * 2 - 1; i++) {
         result = result || board.hasMinorDiagonalConflictAt(i);
       }
 

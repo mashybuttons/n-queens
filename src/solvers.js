@@ -31,7 +31,50 @@ window.countNRooksSolutions = function(n) {
   var ans = 0;
   var iCount = 0;
 
+ 
 
+  // var countRooks = function(test) {
+  //   for (var i = 0; i < n; i++) {
+  //     for (var j = 0; j < n; j++) {
+  //       if (test.rows()[i][j] === 1) {
+  //         iCount++;
+  //       }
+  //     }
+  //   }
+  // };
+
+  // var loop = function(row, col) {
+  //   if (n === 2) {
+  //     ans = 2;
+  //     return;
+  //   }
+  //   if (n === 1) {
+  //     ans = 1;
+  //     return;
+  //   }
+  //   board.togglePiece(row, col);
+  //   for (var i = 1; i < boardSize; i++) {
+  //     for (var j = 0; j < boardSize; j++) {
+  //       board.togglePiece(i, j);
+  //       if (board.hasAnyRooksConflicts() === true) {
+  //         board.togglePiece(i, j);
+  //       } else {
+  //         countRooks(board);
+  //         if (iCount === n) {
+  //           ans++;
+  //         }
+  //         iCount = 0;
+  //       }
+  //     }
+  //   }
+  // };
+
+  // for (var i = 0; i < boardSize; i++) {
+  //   board = new Board({n: n});
+  //   // recurse(0, i, board);
+  //   loop(0, i);
+  // }
+//____________________________________________
   var countRooks = function(test) {
     for (var i = 0; i < n; i++) {
       for (var j = 0; j < n; j++) {
@@ -179,10 +222,8 @@ window.countNQueensSolutions = function(n) {
   var recurse = function(row, col, board) {
 
     iCount = 0;
-    
     board.togglePiece(row, col);
     // if there are conflicts
-    
     if (n === 1) {
       ans = 1;
       return;
@@ -191,28 +232,31 @@ window.countNQueensSolutions = function(n) {
       ans = 0;
       return;
     }
-
-    if (board.hasAnyQueensConflicts() === true) {
-      board.togglePiece(row, col);
-    } else if (board.hasAnyQueensConflicts() === false) {
+    if (board.hasAnyQueensConflicts() === false) {
       countQueens(board);
-    
       if (iCount === n) {
         ans++;
+        return;
       } else {
         for (var i = 0; i < n; i++) {
           // console.log(JSON.stringify(board.rows()));
-          if (board._isInBounds(row + 1, 0) === true) {
-            var r = JSON.parse(JSON.stringify(board.rows()));
-            var newBoard = new Board(r);
-            // console.log(newBoard.rows());
-            recurse(row + 1, i, newBoard);
+          if (board._isInBounds(row + 1, 0) === true && i !== col) {
+            board.togglePiece(row + 1, i);
+            if (board.hasColConflictAt(i) === true) {
+              board.togglePiece(row + 1, i);
+            } else {
+              board.togglePiece(row + 1, i);
+
+              var r = JSON.parse(JSON.stringify(board.rows()));
+              var newBoard = new Board(r);
+              // console.log(newBoard.rows())
+              recurse(row + 1, i, newBoard);
+            }
           }
         }
       }
     }
   };
-  
   for (var i = 0; i < boardSize; i++) {
     board2 = new Board({n: n});
     recurse(0, i, board2);    

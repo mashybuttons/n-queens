@@ -54,20 +54,26 @@ window.countNRooksSolutions = function(n) {
       ans = 1;
       return;
     }
-    if (board.hasAnyRooksConflicts() === true) {
-      board.togglePiece(row, col);
-    } else if (board.hasAnyRooksConflicts() === false) {
+    if (board.hasAnyRooksConflicts() === false) {
       countRooks(board);
       if (iCount === n) {
         ans++;
+        return;
       } else {
         for (var i = 0; i < n; i++) {
           // console.log(JSON.stringify(board.rows()));
-          if (board._isInBounds(row + 1, 0) === true) {
-            var r = JSON.parse(JSON.stringify(board.rows()));
-            var newBoard = new Board(r);
-            // console.log(newBoard.rows());
-            recurse(row + 1, i, newBoard);
+          if (board._isInBounds(row + 1, 0) === true && i !== col) {
+            board.togglePiece(row + 1, i);
+            if (board.hasColConflictAt(i) === true) {
+              board.togglePiece(row + 1, i);
+            } else {
+              board.togglePiece(row + 1, i);
+
+              var r = JSON.parse(JSON.stringify(board.rows()));
+              var newBoard = new Board(r);
+              // console.log(newBoard.rows())
+              recurse(row + 1, i, newBoard);
+            }
           }
         }
       }
@@ -121,11 +127,12 @@ window.findNQueensSolution = function(n) {
   
     if (board.hasAnyQueensConflicts() === true) {
       board.togglePiece(row, col);
+      return;
     } else if (board.hasAnyQueensConflicts() === false) {
       countQueens(board);
-    
       if (iCount === n) {
-        return ans = board.rows();
+        ans = board.rows();
+        return;
       } else {
         for (var i = 0; i < n; i++) {
           // console.log(JSON.stringify(board.rows()));
